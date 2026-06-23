@@ -123,16 +123,4 @@ After the initial setup wizard:
 ./scripts/teardown.sh --volumes
 ```
 
-## What This Demonstrates (for your portfolio)
-
-- **Docker Compose** multi-service orchestration
-- **CI/CD pipeline design** — stages, gates, artifacts
-- **Code quality enforcement** with SonarQube Quality Gates
-- **Artifact management** with Nexus versioned releases  
-- **Multi-stage Docker builds** for lean production images
-- **Webhook-driven automation** — push triggers pipeline
-- **Infrastructure as configuration** — everything reproducible from `docker compose up`
-
----
-
 *Built as part of a DevOps practical course. All tools are open-source or free tier.*
