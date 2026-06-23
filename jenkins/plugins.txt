@@ -1,0 +1,35 @@
+# Jenkins plugins — install via Manage Jenkins > Plugin Manager
+# Or use the jenkins-plugin-cli at container startup
+
+# Core pipeline
+workflow-aggregator       # Pipeline suite (Declarative + Scripted)
+pipeline-stage-view       # Pipeline stage visualiser
+blueocean                 # Modern pipeline UI
+
+# Source control
+git                       # Git integration
+gitea                     # Gitea webhook & SCM
+
+# Build tools
+maven-plugin              # Maven integration
+jdk-tool                  # JDK auto-installer
+
+# Code quality
+sonar                     # SonarQube Scanner
+
+# Artifact repository
+nexus-artifact-uploader   # Upload to Nexus
+nexus-jenkins-plugin      # Full Nexus integration
+
+# Docker
+docker-plugin             # Docker build & run
+docker-workflow           # Docker Pipeline steps (build, push, etc.)
+docker-commons            # Shared Docker types
+
+# Credentials & security
+credentials-binding       # Bind secrets to env vars
+plain-credentials         # Username/password credentials
+
+# Notifications
+slack                     # Slack notifications (optional)
+email-ext                 # Extended email (optional)
