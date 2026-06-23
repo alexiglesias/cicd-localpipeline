@@ -1,0 +1,123 @@
+version: '3.9'
+
+networks:
+  cicd-net:
+    driver: bridge
+
+volumes:
+  gitea-data:
+  gitea-db:
+  jenkins-data:
+  nexus-data:
+  sonarqube-data:
+  sonarqube-db:
+  sonarqube-logs:
+  sonarqube-extensions:
+
+services:
+
+  # ─── Git Server ────────────────────────────────────────────────────────────
+  gitea-db:
+    image: postgres:15-alpine
+    container_name: gitea-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gitea
+      POSTGRES_PASSWORD: gitea_pass
+      POSTGRES_DB: gitea
+    volumes:
+      - gitea-db:/var/lib/postgresql/data
+    networks:
+      - cicd-net
+
+  gitea:
+    image: gitea/gitea:1.21
+    container_name: gitea
+    restart: unless-stopped
+    depends_on:
+      - gitea-db
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__database__DB_TYPE=postgres
+      - GITEA__database__HOST=gitea-db:5432
+      - GITEA__database__NAME=gitea
+      - GITEA__database__USER=gitea
+      - GITEA__database__PASSWD=gitea_pass
+      - GITEA__server__ROOT_URL=http://localhost:3000
+      - GITEA__webhook__ALLOWED_HOST_LIST=jenkins
+    ports:
+      - "3000:3000"   # Web UI
+      - "2222:22"     # Git over SSH
+    volumes:
+      - gitea-data:/data
+    networks:
+      - cicd-net
+
+  # ─── CI/CD Server ──────────────────────────────────────────────────────────
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: jenkins
+    restart: unless-stopped
+    user: root                          # needed to run Docker commands
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - JENKINS_OPTS=--httpPort=8080
+    ports:
+      - "8080:8080"   # Web UI
+      - "50000:50000" # Agent port
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock   # Docker-in-Docker (socket)
+      - ./jenkins/plugins.txt:/usr/share/jenkins/ref/plugins.txt
+    networks:
+      - cicd-net
+
+  # ─── Artifact Repository ───────────────────────────────────────────────────
+  nexus:
+    image: sonatype/nexus3:latest
+    container_name: nexus
+    restart: unless-stopped
+    ports:
+      - "8081:8081"   # Web UI
+    volumes:
+      - nexus-data:/nexus-data
+    networks:
+      - cicd-net
+
+  # ─── Code Quality ──────────────────────────────────────────────────────────
+  sonarqube-db:
+    image: postgres:15-alpine
+    container_name: sonarqube-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar_pass
+      POSTGRES_DB: sonarqube
+    volumes:
+      - sonarqube-db:/var/lib/postgresql/data
+    networks:
+      - cicd-net
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    restart: unless-stopped
+    depends_on:
+      - sonarqube-db
+    environment:
+      - SONAR_JDBC_URL=jdbc:postgresql://sonarqube-db:5432/sonarqube
+      - SONAR_JDBC_USERNAME=sonar
+      - SONAR_JDBC_PASSWORD=sonar_pass
+    ports:
+      - "9000:9000"   # Web UI
+    volumes:
+      - sonarqube-data:/opt/sonarqube/data
+      - sonarqube-logs:/opt/sonarqube/logs
+      - sonarqube-extensions:/opt/sonarqube/extensions
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - cicd-net
