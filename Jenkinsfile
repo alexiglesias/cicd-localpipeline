@@ -11,7 +11,7 @@ pipeline {
     // ── Tool aliases (configure these names in Jenkins > Global Tool Config) ──
     tools {
         maven 'Maven-3.9'
-        jdk   'JDK-17'
+        jdk   'JDK-21'
     }
 
     // ── Environment variables ─────────────────────────────────────────────────

@@ -4,7 +4,6 @@
 # Core pipeline
 workflow-aggregator       # Pipeline suite (Declarative + Scripted)
 pipeline-stage-view       # Pipeline stage visualiser
-blueocean                 # Modern pipeline UI
 
 # Source control
 git                       # Git integration
@@ -19,10 +18,8 @@ sonar                     # SonarQube Scanner
 
 # Artifact repository
 nexus-artifact-uploader   # Upload to Nexus
-nexus-jenkins-plugin      # Full Nexus integration
 
 # Docker
-docker-plugin             # Docker build & run
 docker-workflow           # Docker Pipeline steps (build, push, etc.)
 docker-commons            # Shared Docker types
 
@@ -32,4 +29,3 @@ plain-credentials         # Username/password credentials
 
 # Notifications
 slack                     # Slack notifications (optional)
-email-ext                 # Extended email (optional)
