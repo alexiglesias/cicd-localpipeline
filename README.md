@@ -10,6 +10,7 @@
 
 ## What's in here
 A fully local CI/CD pipeline orchestrated with Docker Compose. It spins up four services: Gitea (Git server), Jenkins (CI/CD), SonarQube CE (code quality), and Nexus OSS (artifact repo), and runs a real 8-stage pipeline against a Java/Maven app, ending with a live Docker deployment on your machine. No cloud accounts, no cost.
+This repository contains the CI/CD pipeline infrastructure — the tooling that builds, tests, and deploys a Java application. It is not the application itself. To use this pipeline you need a separate Maven/Spring Boot project with a Jenkinsfile and Dockerfile at the root
 
 - **docker-compose.yml**: wires up all four services on a shared Docker network
 - **Jenkinsfile**: full Groovy pipeline with proper post {} blocks, timeout, credential injection, and quality gate enforcement
