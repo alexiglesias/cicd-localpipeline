@@ -21,8 +21,8 @@ This repository contains the CI/CD pipeline infrastructure — the tooling that 
 
 ## Requirements
 
-- Docker Desktop ?~I? 4.x with **at least 6 GB RAM** allocated
-  *(Settings ?~F~R Resources ?~F~R Memory)*
+- Docker Desktop - 4.x with **at least 6 GB RAM** allocated
+  *(Settings - Resources - Memory)*
 - Git
 - Java and Maven run inside Docker
 
@@ -96,8 +96,8 @@ git push -u origin main
 | # | Stage | What it does |
 |---|-------|-------------|
 | 1 | **Checkout** | Pulls source from Gitea |
-| 2 | **Build** | `mvn clean package` ?~@~T compiles and packages the .jar |
-| 3 | **Test** | `mvn test` ?~@~T runs JUnit tests, publishes results |
+| 2 | **Build** | `mvn clean package` compiles and packages the .jar |
+| 3 | **Test** | `mvn test` runs JUnit tests, publishes results |
 | 4 | **SonarQube Analysis** | Static analysis + coverage check |
 | 5 | **Quality Gate** | Blocks pipeline if code quality thresholds fail |
 | 6 | **Publish to Nexus** | Uploads versioned .jar to Nexus OSS |
