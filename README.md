@@ -125,3 +125,6 @@ git push -u origin main
 | 9000 | SonarQube |
 | 8090 | Your deployed app |
 
+## License
+
+[MIT](./LICENSE)
